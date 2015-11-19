@@ -55,4 +55,34 @@ public class MTupleTest {
 
         assertThat(person.get("age"), equalTo(23));
     }
+
+    public interface Message {
+        static MTuple<Message> build(Consumer<Message> buildWith) {
+            return MTupleBuilder.build(Message.class, buildWith);
+        }
+
+        void itemCreated(String id, String name);
+        void itemDeleted(String id);
+
+        // Anonymous classes act like pattern matchers...
+        Extractor<Message, String> id = result -> new Message() {
+            @Override
+            public void itemCreated(String id, String name) {
+                result.accept(id);
+            }
+
+            @Override
+            public void itemDeleted(String id) {
+                result.accept(id);
+            }
+        };
+    }
+
+    @Test
+    public void multipleMethods() {
+        MTuple<Message> createdMessage = Message.build(m -> m.itemCreated("123", "Foo"));
+        MTuple<Message> deletedMessage = Message.build(m -> m.itemDeleted("123"));
+
+        assertThat(createdMessage.extract(Message.id), equalTo(deletedMessage.extract(Message.id)));
+    }
 }
