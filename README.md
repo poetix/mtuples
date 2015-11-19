@@ -43,7 +43,7 @@ public void readValues() {
     MTuple<Person> person = Person.build(p -> p.with("Theodor", 41));
 
     person.accept((name, age) ->
-        System.out.println(name + " is " + age + "years old."))
+        System.out.println(name + " is " + age + " years old."))
 }
 ```
 
