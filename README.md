@@ -56,9 +56,9 @@ String name = theName.get();
 But who wants to do _that_? There's a better way, which is to define an `Extractor<T, V>` which looks like this:
 
 ```java
-Extractor<Person, String> name = result -> (name, age) -> result.accept(name);
+Extractor<Person, String> theName = result -> (name, age) -> result.accept(name);
 
-String name = person.extract(name);
+String name = person.extract(theName);
 ```
 
 Because the `with` method on `Person` returns `void`, we can't return a value directly from the lambda we pass in. So instead we pass a `Function<Consumer<V>, T>` to the `extract` method. It gives us a `Consumer<V>` (which we've called `result` here), to which we supply the value we want to return as a result; we give it an implementation of `Person` which it then calls with the `MTuple<Person>`'s arguments. Our lambda has to call `result.accept` to "send" a value back out to the caller.
