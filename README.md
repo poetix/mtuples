@@ -74,35 +74,35 @@ Anyway, all of this is very nice, but what about polymorphism? Scala's case clas
 Well...
 
 ```java
-    public interface Message {
-        static MTuple<Message> build(Consumer<Message> buildWith) {
-            return MTupleBuilder.build(Message.class, buildWith);
+public interface Message {
+    static MTuple<Message> build(Consumer<Message> buildWith) {
+        return MTupleBuilder.build(Message.class, buildWith);
+    }
+
+    void itemCreated(String id, String name);
+    void itemDeleted(String id);
+
+    // Anonymous classes act like pattern matchers...
+    Extractor<Message, String> id = result -> new Message() {
+        @Override
+        public void itemCreated(String id, String name) {
+            result.accept(id);
         }
 
-        void itemCreated(String id, String name);
-        void itemDeleted(String id);
+        @Override
+        public void itemDeleted(String id) {
+            result.accept(id);
+        }
+    };
+}
 
-        // Anonymous classes act like pattern matchers...
-        Extractor<Message, String> id = result -> new Message() {
-            @Override
-            public void itemCreated(String id, String name) {
-                result.accept(id);
-            }
+@Test
+public void multipleMethods() {
+    MTuple<Message> createdMessage = Message.build(m -> m.itemCreated("123", "Foo"));
+    MTuple<Message> deletedMessage = Message.build(m -> m.itemDeleted("123"));
 
-            @Override
-            public void itemDeleted(String id) {
-                result.accept(id);
-            }
-        };
-    }
-
-    @Test
-    public void multipleMethods() {
-        MTuple<Message> createdMessage = Message.build(m -> m.itemCreated("123", "Foo"));
-        MTuple<Message> deletedMessage = Message.build(m -> m.itemDeleted("123"));
-
-        assertThat(createdMessage.extract(Message.id), equalTo(deletedMessage.extract(Message.id)));
-    }
+    assertThat(createdMessage.extract(Message.id), equalTo(deletedMessage.extract(Message.id)));
+}
 ```
 
 _I'm not talking to you any more. Go away._
