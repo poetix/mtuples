@@ -42,7 +42,7 @@ It is a _bit_ weird. The `build` syntax maybe needs some explaining. `MTupleBuil
 
 _Go on._
 
-Suppose we wanted to _read_ a single value from the `MTuple<T>`. We could do this:
+Suppose we wanted to _read_ a single value from the `MTuple<T>`. We _could_ do this:
 
 ```java
 AtomicReference<String> theName = new AtomicReference<>();
