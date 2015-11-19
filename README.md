@@ -3,6 +3,17 @@ MTuples
 
 Very lightweight record types for Java 8.
 
+Maven
+=====
+
+```xml
+<dependency>
+    <groupId>com.codepoetics</groupId>
+    <artifactId>mtuples</artifactId>
+    <version>0.2</version>
+</dependency>
+```
+
 FAQ
 ===
 
