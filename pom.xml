@@ -10,7 +10,7 @@
 
     <groupId>com.codepoetics</groupId>
     <artifactId>mtuples</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
